@@ -1,0 +1,19 @@
+Date :- 23rd jan 2020
+version :- 13.0.0.1
+issue :- 
+	- remove _description warning
+
+13.0.0.2:- 
+	Sub task page remove and sub-task counter updated.
+
+13.0.0.3 - parent_id hide from task form view.and widget added for time field.
+
+13.0.0.4 - create sub task button remove.
+
+13.0.0.5 - Create sub task button is displayed only in parent form view. 
+
+13.0.0.6 - On creating subtasks from parent, parent_id field is filled up automatically. 
+		 - While manually creating a subtask, create subtasks button becomes invisible.
+
+Version: 13.0.0.7 | Date : 27/07/2020
+-->  Change Xpath of project in res.config.settings.

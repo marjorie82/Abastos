@@ -1,0 +1,23 @@
+Version : 13.0.0.1
+Point : pertial amount fiele improve
+
+Version : 13.0.0.2
+	- Improved the view in res.config.settings. 
+	- Partial amount field will only be displayed when partial budget approve box is checked.
+
+Version : 13.0.0.3
+	- Improved the calculation method of practical amount.	
+
+Version : 13.0.0.4
+	- Index improved.	
+    - Displayed paid date field when debug mode is off.	
+
+Version : 13.0.0.5
+Point : Improved start date and end date field
+
+Version : 13.0.0.6
+	- Remove create and import button from the budget ananlysis.
+	- Open form view for budget lines page.
+	- Add 2 field in budget form view project name and analytic account.
+	- Fetched the Analytic account from the project form view.
+	- Pass Analytic account in cost sheet line.

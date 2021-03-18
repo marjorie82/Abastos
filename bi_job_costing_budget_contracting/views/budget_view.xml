@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- followup of analytic account views -->
+		<record id="crossovered_budget_lines_extend_form" model="ir.ui.view">
+			<field name="name">crossovered.budget.lines.extend.form</field>
+			<field name="model">crossovered.budget.lines</field>
+			<field name="inherit_id" ref="bi_account_budget.view_crossovered_budget_line_tree" />
+			<field name="arch" type="xml">
+			    <xpath expr="//field[@name='analytic_account_id']" position="after">
+					<field name="cost_type"/>
+					<field name="job_type"/>
+					<field name="job_cost_sheet_id"/>
+					<field name="product_id"/>
+					<field name="uom_id"/>
+					<field name="description"/>
+					<field name="actual_purchase_qty"/>
+					<field name="actual_invoice_qty"/>
+					<field name="lobour_hours"/>
+					<field name="material_qty"/>
+					<field name="overhead_qty"/>
+					<field name="actual_vendor_bill_qty"/>
+					<field name="currency_id"/>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="crossovered_budget_lines_form_extend_form" model="ir.ui.view">
+			<field name="name">crossovered.budget.lines.form.extend.form</field>
+			<field name="model">crossovered.budget.lines</field>
+			<field name="inherit_id" ref="bi_account_budget.view_crossovered_budget_line_form" />
+			<field name="arch" type="xml">
+			    <xpath expr="//group" position="after">
+			    	<group col="2">
+			    		<group>
+				    		<field name="cost_type"/>
+							<field name="job_type"/>
+							<field name="job_cost_sheet_id"/>
+						</group>
+						<group string="Actual Quantity">
+							<field name="actual_purchase_qty"/>
+							<field name="actual_invoice_qty"/>
+							<field name="actual_vendor_bill_qty"/>
+						</group>
+						<group string="Planned Quantity">
+							<field name="lobour_hours"/>
+							<field name="material_qty"/>
+							<field name="overhead_qty"/>
+						</group>
+						<group string="Other Information">
+							<field name="product_id"/>
+							<field name="uom_id"/>
+							<field name="description"/>
+							<field name="currency_id"/>
+						</group>
+					</group>
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="crossovered_budget_extend_form" model="ir.ui.view">
+			<field name="name">crossovered.budget.extend.form</field>
+			<field name="model">crossovered.budget</field>
+			<field name="inherit_id" ref="bi_account_budget.crossovered_budget_view_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/notebook/page/field[@name='crossovered_budget_line']/tree/field[@name='analytic_account_id']" position="after">
+					<field name="cost_type"/>
+					<field name="job_type"/>
+					<field name="job_cost_sheet_id"/>
+					<field name="product_id"/>
+					<field name="uom_id"/>
+					<field name="description"/>
+					<field name="actual_purchase_qty"/>
+					<field name="actual_invoice_qty"/>
+					<field name="lobour_hours"/>
+					<field name="material_qty"/>
+					<field name="overhead_qty"/>
+					<field name="actual_vendor_bill_qty"/>
+					<field name="currency_id"/>
+				</xpath>
+				<xpath expr="//form/sheet/notebook/page/field[@name='crossovered_budget_line']/form/group" position="after">
+					<group col="2">
+			    		<group>
+				    		<field name="cost_type"/>
+							<field name="job_type"/>
+							<field name="job_cost_sheet_id"/>
+						</group>
+						<group string="Actual Quantity">
+							<field name="actual_purchase_qty"/>
+							<field name="actual_invoice_qty"/>
+							<field name="actual_vendor_bill_qty"/>
+						</group>
+						<group string="Planned Quantity">
+							<field name="lobour_hours" attrs="{'invisible': [('cost_type', 'in', ['overhead','material'])]}"/>
+							<field name="material_qty" attrs="{'invisible': [('cost_type', 'in', ['labour','overhead'])]}"/>
+							<field name="overhead_qty" attrs="{'invisible': [('cost_type', 'in', ['labour','material'])]}"/>
+						</group>
+						<group string="Other Information">
+							<field name="product_id"/>
+							<field name="uom_id"/>
+							<field name="description"/>
+							<field name="currency_id"/>
+						</group>
+					</group>
+				</xpath>
+				<div class="oe_title" position="before">
+					<div class="oe_button_box" name="button_box" >
+							<button class="oe_stat_button" name="action_view_cost_sheet"
+										type="object" icon="fa-bars" string="Cost Sheet"> 
+							</button>
+							<button class="oe_stat_button" name="action_view_cost_sheet_line"
+										type="object" icon="fa-list" string="Cost Sheet Lines"> 
+							</button>
+					</div>
+				</div>
+			</field>
+		</record>
+		
+		<menuitem parent="bi_odoo_job_costing_management.sub_menu_projects"
+            id="menu_act_crossovered_budget_view_inherit"
+            name="Project Budgets"
+            action="bi_account_budget.act_crossovered_budget_view"/>
+            
+        <record id="view_crossovered_budget_report_pivot" model="ir.ui.view">
+         <field name="name">crossovered.budget.report.pivot</field>
+         <field name="model">crossovered.budget.lines</field>
+         <field name="arch" type="xml">
+             <pivot string="Budget Analysis" disable_linking="True">
+                <field name="crossovered_budget_id" type="row"/>
+                <field name="actual_purchase_qty" type="measure"/>
+				<field name="actual_invoice_qty" type="measure"/>
+				<field name="actual_vendor_bill_qty" type="measure"/>
+				<field name="lobour_hours" type="measure"/>
+				<field name="material_qty" type="measure"/>
+				<field name="overhead_qty" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="act_crossovered_budget_lines_view_inherit">
+            <field name="name">Budgets Analysis</field>
+            <field name="res_model">crossovered.budget.lines</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="view_id" ref="crossovered_budget_lines_extend_form"/>
+        </record>
+	<menuitem name="Budget Report"
+        id="sub_menu_budget"
+        parent = "bi_odoo_job_costing_management.main_menu_job_estimates"
+        sequence = '2'
+        />
+            
+    <menuitem parent="sub_menu_budget"
+        id="sub_sub_menu_budget"
+        action="act_crossovered_budget_lines_view_inherit"/>
+            
+    <record id="job_costing_extend_form_inherit" model="ir.ui.view">
+		<field name="name">job.costing.extend.form.inherit</field>
+		<field name="model">job.cost.sheet</field>
+		<field name="inherit_id" ref="bi_odoo_job_costing_management.job_cost_sheet_form_view"/>
+			<field name="arch" type="xml">
+				<field name="job_issue_customer_id" position="after">
+				<field name="budget_id"/>
+			</field>
+		</field>
+	</record>
+
+	</data>
+</odoo>
