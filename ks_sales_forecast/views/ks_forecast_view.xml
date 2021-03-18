@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="ks_forecast_form_view" model="ir.ui.view">
+        <field name="name">forecast.form.view</field>
+        <field name="model">ks.sales.forecast</field>
+        <field name="arch" type="xml">
+            <form string="Sales Forecast">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-line-chart" name="ks_predict_sales"
+                            type="object" groups="ks_sales_forecast.ks_forecast_group">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Predict Sales</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <h1>
+                            <field name="ks_name" string="Name"/>
+                        </h1>
+                    </group>
+                    <group>
+                        <group invisible="1">
+                            <label for="ks_is_file" string="Want to import data with file"/>
+                            <div>
+                                <field name="ks_is_file" nolabel="1"/>
+                            </div>
+                        </group>
+                        <group>
+                            <label for="ks_is_method_change" string="Want to Change Forecast Method"/>
+                            <div>
+                                <field name="ks_is_method_change" nolabel="1"/>
+                                <field name="ks_forecast_method" string="Forecast Method" attrs="{'invisible': [('ks_is_method_change','=', False)], 'required': [('ks_is_method_change','=', True)]}"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group>
+                        <group name="" string="">
+                            <field name="ks_start_date" string="Start Date" attrs="{'invisible': [('ks_is_file','=', True)]}"/>
+                            <field name="ks_forecast_base" widget="radio" attrs="{'invisible': [('ks_is_file','=', True)]}"/>
+                            <field name="ks_file_type" widget="radio" attrs="{'invisible': [('ks_is_file','=', False)]}"/>
+                            <field name="ks_forecast_period" attrs="{'readonly': [('id','!=', False)]}"/>
+                            <field name="ks_default_forecast_method" string="Default Method" invisible="1"/>
+                            <field name="ks_p" attrs="{'invisible': [('ks_default_forecast_method','not in', ['arma', 'arima'])], 'required': [('ks_default_forecast_method','in', ['ma', 'arma', 'arima'])]}"/>
+                            <field name="ks_d" attrs="{'invisible': [('ks_default_forecast_method','!=', 'arima')], 'required': [('ks_default_forecast_method','=', 'arima')]}"/>
+                        </group>
+                        <group>
+                            <field name="ks_model" string="Model" invisible="1"/>
+                            <field name="ks_end_date" string="End Date" attrs="{'invisible': [('ks_is_file','=', True)]}"/>
+                            <field name="ks_product_ids" string="Products"
+                                   attrs="{'invisible': [('ks_forecast_base','in', ['all', False])], 'required': [('ks_forecast_base','!=', 'all')]}"
+                                   widget="many2many_tags"/>
+                            <field name="ks_import_file" filename="ks_file_name" attrs="{'invisible': [('ks_is_file','=', False)]}"/>
+                            <field name="ks_file_name" invisible="1"/>
+                            <field name="ks_forecast_unit"/>
+                            <field name="ks_is_predicted" invisible="1"/>
+                            <field name="ks_q" attrs="{'invisible': [('ks_default_forecast_method','not in', ['ma', 'arma', 'arima'])], 'required': [('ks_default_forecast_method','in', ['ma', 'arma', 'arima'])]}"/>
+                            <field name="ks_chart_data" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook attrs="{'invisible': [('ks_is_predicted', '=', False)]}">
+                        <page name="graph" string="Charts">
+                            <field name="ks_graph_view" widget="ks_graph"
+                                   attrs="{'invisible': [('ks_is_predicted', '=', False)]}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="ks_forecast_tree_view" model="ir.ui.view">
+        <field name="name">forecast.tree.view</field>
+        <field name="model">ks.sales.forecast</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ks_name" string="Name"/>
+                <field name="ks_model" string="Model"/>
+                <field name="ks_start_date" string="Start Date"/>
+                <field name="ks_end_date" string="End Date"/>
+                <field name="ks_forecast_base"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="ks_forecast_search_view" model="ir.ui.view">
+        <field name="model">ks.sales.forecast</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="ks_name" string="Name"/>
+                <field name="ks_model" string="Model"/>
+                <field name="ks_start_date" string="Start Date"/>
+                <field name="ks_end_date" string="End Date"/>
+                <field name="ks_forecast_base"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="ks_forecast_action">
+        <field name="name">Sales Forecast</field>
+        <field name="res_model">ks.sales.forecast</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="ks_forecast_menuitem" name="Sales Forecast" action="ks_forecast_action" groups="base.group_user"
+              web_icon="ks_sales_forecast,static/description/final-logo.png"/>
+
+    <menuitem id="ks_forecast_sub_menuitem" name="Forecast" parent="ks_forecast_menuitem" action="ks_forecast_action"
+              sequence="2" groups="base.group_user"/>
+
+</odoo>

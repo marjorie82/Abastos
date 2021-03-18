@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_forecast_data,access_forecast_data,ks_sales_forecast.model_ks_sales_forecast,ks_sales_forecast.ks_forecast_group,1,1,1,1
+access_forecast_user_data,access_forecast_user_data,ks_sales_forecast.model_ks_sales_forecast,,1,0,0,0
